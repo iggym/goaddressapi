@@ -3,6 +3,8 @@
 An address API in go.
 The API implements listing addresses, showing a single address, adding an address and modifying an address.
 
+---
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
@@ -41,6 +43,8 @@ You should see the following:
 ```
 [{"id":"1","firstname":"Bryan","lastname":"Connerty","emailaddress":"bryanc@test-email.com","phonenumber":"214-555-5551"},{"id":"2","firstname":"Kate","lastname":"Sacker","emailaddress":"kates@test-email.com","phonenumber":"214-555-5552"},{"id":"3","firstname":"Lonnie","lastname":"Watley","emailaddress":"lonniew@test-email.com","phonenumber":"214-555-5553"},{"id":"4","firstname":"Ira","lastname":"Schirmer","emailaddress":"iras@test-email","phonenumber":"214-555-5554"},{"id":"5","firstname":"Adam","lastname":"DeGiulio","emailaddress":"adamgs@test-email","phonenumber":"214-555-5554"}]
 ```
+
+---
 
 ## Testing the API
 You can test the API by sending HTTP requests to the running server using a HTTP Testing client like [Postman](https://www.getpostman.com/) or using a command line tool like [curl](https://curl.haxx.se/).
