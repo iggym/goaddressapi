@@ -1,6 +1,7 @@
 # Go Address API
 
-An address API in go. 
+An address API in go.
+The API implements listing addresses, showing a single address, adding an address and modifying an address
 
 ## Getting Started
 
