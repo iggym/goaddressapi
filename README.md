@@ -29,7 +29,11 @@ cd goaddressapi
 ```
 go install
 ```
-4. Open another terminal window and test the server with the following [curl](https://curl.haxx.se/) command.
+4. Run the server by typing the following command in your terminal.
+```
+goaddressapi
+```
+5. Open another terminal window and test the server with the following [curl](https://curl.haxx.se/) command.
 ```
 curl -v  GET localhost:8001/addresses
 ```
@@ -38,9 +42,15 @@ You should see the following:
 [{"id":"1","firstname":"Bryan","lastname":"Connerty","emailaddress":"bryanc@test-email.com","phonenumber":"214-555-5551"},{"id":"2","firstname":"Kate","lastname":"Sacker","emailaddress":"kates@test-email.com","phonenumber":"214-555-5552"},{"id":"3","firstname":"Lonnie","lastname":"Watley","emailaddress":"lonniew@test-email.com","phonenumber":"214-555-5553"},{"id":"4","firstname":"Ira","lastname":"Schirmer","emailaddress":"iras@test-email","phonenumber":"214-555-5554"},{"id":"5","firstname":"Adam","lastname":"DeGiulio","emailaddress":"adamgs@test-email","phonenumber":"214-555-5554"}]
 ```
 
-## Running the tests
+## Testing the API
+You can test the API by send HTTP requests to the running server.
 
-Explain how to run the automated tests for this system
+* To add an address
+```
+curl -v -X POST localhost:8001/addresses/31 --data '{"Firstname":"Bobby","lastname":"Axe","emailaddress":"axe@test.com","phonenumber":"214-545-5553"}'
+```
+
+
 
 ### Break down into end to end tests
 
