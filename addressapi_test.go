@@ -104,7 +104,7 @@ func TestListAddresses(t *testing.T) {
 
 func TestExport(t *testing.T) {
 	reader = strings.NewReader("")
-	addressesURLPath := addressesURL + "/export"
+	addressesURLPath := addressesURL +  "/export"
 	request, err := http.NewRequest("GET", addressesURLPath, reader)
 
 	res, err := http.DefaultClient.Do(request)
@@ -119,8 +119,8 @@ func TestExport(t *testing.T) {
 }
 func TestImport(t *testing.T) {
 	reader = strings.NewReader("")
-	addressesURLPath := addressesURL + "/export"
-	request, err := http.NewRequest("GET", addressesURLPath, reader)
+	addressesURLPath := addressesURL + "/import"
+	request, err := http.NewRequest("POST", addressesURLPath, reader)
 
 	res, err := http.DefaultClient.Do(request)
 

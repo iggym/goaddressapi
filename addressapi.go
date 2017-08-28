@@ -124,6 +124,7 @@ func importCSVFile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Println("Addresses from csv file uploaded ")
+	w.WriteHeader(http.StatusOK)
 	fmt.Println(addresses)
 
 }
@@ -156,6 +157,7 @@ func exportCSVFile(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/csv")
 	w.Header().Set("Content-Disposition", "attachment; filename=addresses.csv")
 	http.ServeFile(w, r, csvfilepath)
+	w.WriteHeader(http.StatusOK)
 }
 func checkError(message string, err error) {
 	if err != nil {
@@ -201,8 +203,8 @@ func handlers() *mux.Router {
 	router.HandleFunc("/addresses/{id}", updateAddressEndpoint).Methods("PUT")
 	router.HandleFunc("/addresses/{id}", deleteAddressEndpoint).Methods("DELETE")
 	//upload and download
-	router.HandleFunc("/import", importCSVFile)
-	router.HandleFunc("/export", exportCSVFile)
+	router.HandleFunc("/addresses/import", importCSVFile)
+	router.HandleFunc("/addresses/export", exportCSVFile)
 	router.Handle("/", http.FileServer(http.Dir("static")))
 	return router
 }
