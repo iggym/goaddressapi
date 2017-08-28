@@ -56,7 +56,7 @@ curl -v -X POST localhost:8001/addresses/31 --data '{"Firstname":"Bobby","lastna
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+This project should not be used in a production system as is. It is a  demonstration project.
 
 ## Built With
 
@@ -65,7 +65,7 @@ Add additional notes about how to deploy this on a live system
 
 ## Contributing
 
-We would love your contributions. Submit pull requests with your changes.
+We would love your contributions. Please submit pull requests with your changes.
 
 ## License
 
