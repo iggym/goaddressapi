@@ -2,6 +2,7 @@
 
 An address API in go.
 The API implements listing addresses, showing a single address, adding an address and modifying an address.
+The API also enables exporting addresses to a CSV file and adding addresses by importing a CSV file.
 
 ---
 
@@ -72,6 +73,14 @@ curl -v  GET localhost:8001/addresses
 * To Modify an address
 ```
 curl -v -X PUT localhost:8001/addresses/4 --data '{"ID":"4","Firstname":"Santa","lastname":"Claus","emailaddress":"santa@test.com","phonenumber":"214-545-5553"}'
+```
+* To Export the list of addresses to a CSV file
+```
+curl  localhost:8001/export --output list.csv
+```
+* To import addresses using a CSV file use the command below (assumes your file is a CSV file named tmp.csv)
+```
+curl -i -X POST -H "Content-Type: multipart/form-data" -F "data=@tmp.csv" localhost:8001/import
 ```
 ## Running the unit tests
 To run the unit tests enter the following command
