@@ -1,16 +1,16 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"io"
-	"net/http"
-	"net/http/httptest"
-	"strings"
-	"testing"
-	"bytes"
 	"io/ioutil"
 	"mime/multipart"
+	"net/http"
+	"net/http/httptest"
 	"os"
+	"strings"
+	"testing"
 )
 
 var (
@@ -110,7 +110,7 @@ func TestListAddresses(t *testing.T) {
 
 func TestExport(t *testing.T) {
 	reader = strings.NewReader("")
-	exportURLPath := hostnamePath +  "export"
+	exportURLPath := hostnamePath + "export"
 	request, err := http.NewRequest("GET", exportURLPath, reader)
 
 	res, err := http.DefaultClient.Do(request)
