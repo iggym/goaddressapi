@@ -203,14 +203,14 @@ func handlers() *mux.Router {
 	router.HandleFunc("/addresses/{id}", updateAddressEndpoint).Methods("PUT")
 	router.HandleFunc("/addresses/{id}", deleteAddressEndpoint).Methods("DELETE")
 	//upload and download
-	router.HandleFunc("/addresses/import", importCSVFile)
-	router.HandleFunc("/addresses/export", exportCSVFile)
+	router.HandleFunc("/import", importCSVFile)
+	router.HandleFunc("/export", exportCSVFile)
 	router.Handle("/", http.FileServer(http.Dir("static")))
 	return router
 }
 
 func main() {
-	// add intial data 
+	// add intial data
 	addresses = append(addresses, Address{ID: "1", Firstname: "Bryan", Lastname: "Connerty", EmailAddress: "bryanc@test-email.com", PhoneNumber: "214-555-5551"})
 	addresses = append(addresses, Address{ID: "2", Firstname: "Kate", Lastname: "Sacker", EmailAddress: "kates@test-email.com", PhoneNumber: "214-555-5552"})
 	addresses = append(addresses, Address{ID: "3", Firstname: "Lonnie", Lastname: "Watley", EmailAddress: "lonniew@test-email.com", PhoneNumber: "214-555-5553"})
