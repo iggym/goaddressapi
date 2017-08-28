@@ -22,11 +22,9 @@ func init() {
 }
 
 func TestGetAddress(t *testing.T) {
-	addressJSON := `{"Firstname":"John","lastname":"Doe","emailaddress":"john@test.com","phonenumber":"214-555-5553"}`
-
-	reader = strings.NewReader(addressJSON)
+	reader = strings.NewReader("")
 	addressesURLParam := addressesURL + "/101"
-	request, err := http.NewRequest("POST", addressesUrlParam, reader)
+	request, err := http.NewRequest("GET", addressesURLParam, reader)
 
 	res, err := http.DefaultClient.Do(request)
 
@@ -43,7 +41,7 @@ func TestCreateAddress(t *testing.T) {
 
 	reader = strings.NewReader(addressJSON)
 	addressesURLParam := addressesURL + "/101"
-	request, err := http.NewRequest("POST", addressesUrlParam, reader)
+	request, err := http.NewRequest("POST", addressesURLParam, reader)
 
 	res, err := http.DefaultClient.Do(request)
 
@@ -60,7 +58,7 @@ func TestUpdateAddress(t *testing.T) {
 
 	reader = strings.NewReader(addressJSON)
 	addressesURLParam := addressesURL + "/101"
-	request, err := http.NewRequest("POST", addressesUrlParam, reader)
+	request, err := http.NewRequest("PUT", addressesURLParam, reader)
 
 	res, err := http.DefaultClient.Do(request)
 
@@ -73,11 +71,9 @@ func TestUpdateAddress(t *testing.T) {
 	}
 }
 func TestDeleteAddress(t *testing.T) {
-	addressJSON := `{"Firstname":"John","lastname":"Doe","emailaddress":"john@test.com","phonenumber":"214-555-5553"}`
-
-	reader = strings.NewReader(addressJSON)
+	reader = strings.NewReader("")
 	addressesURLParam := addressesURL + "/101"
-	request, err := http.NewRequest("POST", addressesUrlParam, reader)
+	request, err := http.NewRequest("DELETE", addressesURLParam, reader)
 
 	res, err := http.DefaultClient.Do(request)
 
@@ -93,7 +89,38 @@ func TestDeleteAddress(t *testing.T) {
 func TestListAddresses(t *testing.T) {
 	reader = strings.NewReader("")
 
-	request, err := http.NewRequest("GET", addressesUrl, reader)
+	request, err := http.NewRequest("GET", addressesURL, reader)
+
+	res, err := http.DefaultClient.Do(request)
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	if res.StatusCode != 200 {
+		t.Errorf("Success expected: %d", res.StatusCode)
+	}
+}
+
+func TestExport(t *testing.T) {
+	reader = strings.NewReader("")
+	addressesURLPath := addressesURL + "/export"
+	request, err := http.NewRequest("GET", addressesURLPath, reader)
+
+	res, err := http.DefaultClient.Do(request)
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	if res.StatusCode != 200 {
+		t.Errorf("Success expected: %d", res.StatusCode)
+	}
+}
+func TestImport(t *testing.T) {
+	reader = strings.NewReader("")
+	addressesURLPath := addressesURL + "/export"
+	request, err := http.NewRequest("GET", addressesURLPath, reader)
 
 	res, err := http.DefaultClient.Do(request)
 
