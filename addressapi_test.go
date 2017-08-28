@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	server   *httptest.Server
-	reader   io.Reader
+	server       *httptest.Server
+	reader       io.Reader
 	addressesURL string
 )
 
@@ -26,7 +26,7 @@ func TestGetAddress(t *testing.T) {
 
 	reader = strings.NewReader(addressJSON)
 	addressesURLParam := addressesURL + "/101"
-	request, err := http.NewRequest("POST", addressesUrlParam , reader)
+	request, err := http.NewRequest("POST", addressesUrlParam, reader)
 
 	res, err := http.DefaultClient.Do(request)
 
@@ -43,7 +43,7 @@ func TestCreateAddress(t *testing.T) {
 
 	reader = strings.NewReader(addressJSON)
 	addressesURLParam := addressesURL + "/101"
-	request, err := http.NewRequest("POST", addressesUrlParam , reader)
+	request, err := http.NewRequest("POST", addressesUrlParam, reader)
 
 	res, err := http.DefaultClient.Do(request)
 
@@ -60,7 +60,7 @@ func TestUpdateAddress(t *testing.T) {
 
 	reader = strings.NewReader(addressJSON)
 	addressesURLParam := addressesURL + "/101"
-	request, err := http.NewRequest("POST", addressesUrlParam , reader)
+	request, err := http.NewRequest("POST", addressesUrlParam, reader)
 
 	res, err := http.DefaultClient.Do(request)
 
@@ -77,7 +77,7 @@ func TestDeleteAddress(t *testing.T) {
 
 	reader = strings.NewReader(addressJSON)
 	addressesURLParam := addressesURL + "/101"
-	request, err := http.NewRequest("POST", addressesUrlParam , reader)
+	request, err := http.NewRequest("POST", addressesUrlParam, reader)
 
 	res, err := http.DefaultClient.Do(request)
 
