@@ -216,6 +216,6 @@ func main() {
 	addresses = append(addresses, Address{ID: "3", Firstname: "Lonnie", Lastname: "Watley", EmailAddress: "lonniew@test-email.com", PhoneNumber: "214-555-5553"})
 	addresses = append(addresses, Address{ID: "4", Firstname: "Ira", Lastname: "Schirmer", EmailAddress: "iras@test-email", PhoneNumber: "214-555-5554"})
 	addresses = append(addresses, Address{ID: "5", Firstname: "Adam", Lastname: "DeGiulio", EmailAddress: "adamgs@test-email", PhoneNumber: "214-555-5554"})
-
+	fmt.Println("Server starting (serving port: 8001)")
 	log.Fatal(http.ListenAndServe(":8001", handlers()))
 }
