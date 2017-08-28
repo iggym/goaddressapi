@@ -75,3 +75,5 @@ node_modules
 
 #*.exe
 #*.csv
+# Go tools development artifacts
+coverage.html
