@@ -9,12 +9,23 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 * Download and [install Go](https://golang.org/doc/install).
-* Set your [GOPATH](https://github.com/golang/go/wiki/SettingGOPATH)
-* Clone this repository
+* Make sure your [GOPATH](https://github.com/golang/go/wiki/SettingGOPATH) is set.
+* Get [Gorilla Mux](https://github.com/gorilla/mux) (the command below assumes a [correctly configured](https://golang.org/doc/install#testing) Go toolchain)
+```
+go get -u github.com/gorilla/mux
+```
+* Clone this repository (assumes terminal)
 ```
 git clone https://github.com/iggym/goaddressapi.git
 ```
-
+* change directory to goaddressapi
+```
+cd goaddressapi
+```
+* run go install
+```
+go install
+```
 ### Installing
 
 A step by step series of examples that tell you have to get a development env running
