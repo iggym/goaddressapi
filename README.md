@@ -45,7 +45,7 @@ You should see the following:
 ## Testing the API
 You can test the API by sending HTTP requests to the running server using a HTTP Testing client like [Postman](https://www.getpostman.com/) or using a command line tool like [curl](https://curl.haxx.se/).
 
-Start by running the server by typing the following command in your terminal. (see above section in Installing and starting the server.)
+Start by running the server by typing the following command in your terminal. (see above section for Installing and starting the server.)
 ```
 goaddressapi
 ```
