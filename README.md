@@ -49,11 +49,26 @@ Start by running the server by typing the following command in your terminal. (s
 ```
 goaddressapi
 ```
+* To get a single address (use the id for the parameter)
+```
+ curl -v GET localhost:8001/addresses/2
+```
 * To add an address
 ```
 curl -v -X POST localhost:8001/addresses/31 --data '{"Firstname":"Bobby","lastname":"Axe","emailaddress":"axe@test.com","phonenumber":"214-545-5553"}'
 ```
-
+* To Delete an address
+```
+curl -v -X DELETE localhost:8001/addresses/3
+```
+* To list all addresses
+```
+curl -v  GET localhost:8001/addresses
+```
+* To Modify an address
+```
+curl -v -X PUT localhost:8001/addresses/4 --data '{"ID":"4","Firstname":"Santa","lastname":"Claus","emailaddress":"santa@test.com","phonenumber":"214-545-5553"}'
+```
 
 ## Deployment
 
