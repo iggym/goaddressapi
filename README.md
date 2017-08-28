@@ -14,34 +14,21 @@ These instructions will get you a copy of the project up and running on your loc
 ```
 go get -u github.com/gorilla/mux
 ```
-* Clone this repository (assumes terminal)
+
+### Installing
+
+1. Clone this repository (assumes terminal)
 ```
 git clone https://github.com/iggym/goaddressapi.git
 ```
-* change directory to goaddressapi
+2. change directory to goaddressapi
 ```
 cd goaddressapi
 ```
-* run go install
+3. run go install
 ```
 go install
 ```
-### Installing
-
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
 End with an example of getting some data out of the system or using it for a little demo
 
 ## Running the tests
