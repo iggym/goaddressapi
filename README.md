@@ -29,7 +29,7 @@ cd goaddressapi
 ```
 go install
 ```
-4. Run the server by typing the following command in your terminal.
+4. Run the server by typing the following command in your terminal. (the command below assumes a [correctly configured](https://golang.org/doc/install#testing) Go toolchain)
 ```
 goaddressapi
 ```
@@ -44,7 +44,10 @@ You should see the following:
 
 ## Testing the API
 You can test the API by send HTTP requests to the running server.
-
+Start by running the server by typing the following command in your terminal. (see above section in Installing and starting the server.)
+```
+goaddressapi
+```
 * To add an address
 ```
 curl -v -X POST localhost:8001/addresses/31 --data '{"Firstname":"Bobby","lastname":"Axe","emailaddress":"axe@test.com","phonenumber":"214-545-5553"}'
