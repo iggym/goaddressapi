@@ -73,6 +73,11 @@ curl -v  GET localhost:8001/addresses
 ```
 curl -v -X PUT localhost:8001/addresses/4 --data '{"ID":"4","Firstname":"Santa","lastname":"Claus","emailaddress":"santa@test.com","phonenumber":"214-545-5553"}'
 ```
+## Running the unit tests
+To run the unit tests enter the following command
+```
+go test -v
+```
 
 ## Deployment
 
