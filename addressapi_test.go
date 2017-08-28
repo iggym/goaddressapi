@@ -12,20 +12,20 @@ import (
 var (
 	server   *httptest.Server
 	reader   io.Reader
-	addressesUrl string
+	addressesURL string
 )
 
 func init() {
-	server = httptest.NewServer(Handlers())
+	server = httptest.NewServer(handlers())
 
-	addressesUrl = fmt.Sprintf("%s/addresses", server.URL)
+	addressesURL = fmt.Sprintf("%s/addresses", server.URL)
 }
 
 func TestGetAddress(t *testing.T) {
-	addressJson := `{"Firstname":"John","lastname":"Doe","emailaddress":"john@test.com","phonenumber":"214-555-5553"}`
+	addressJSON := `{"Firstname":"John","lastname":"Doe","emailaddress":"john@test.com","phonenumber":"214-555-5553"}`
 
-	reader = strings.NewReader(addressJson)
-	addressesUrlParam := addressesUrl + "/101"
+	reader = strings.NewReader(addressJSON)
+	addressesURLParam := addressesURL + "/101"
 	request, err := http.NewRequest("POST", addressesUrlParam , reader)
 
 	res, err := http.DefaultClient.Do(request)
@@ -39,10 +39,10 @@ func TestGetAddress(t *testing.T) {
 	}
 }
 func TestCreateAddress(t *testing.T) {
-	addressJson := `{"Firstname":"John","lastname":"Doe","emailaddress":"john@test.com","phonenumber":"214-555-5553"}`
+	addressJSON := `{"Firstname":"John","lastname":"Doe","emailaddress":"john@test.com","phonenumber":"214-555-5553"}`
 
-	reader = strings.NewReader(addressJson)
-	addressesUrlParam := addressesUrl + "/101"
+	reader = strings.NewReader(addressJSON)
+	addressesURLParam := addressesURL + "/101"
 	request, err := http.NewRequest("POST", addressesUrlParam , reader)
 
 	res, err := http.DefaultClient.Do(request)
@@ -56,10 +56,10 @@ func TestCreateAddress(t *testing.T) {
 	}
 }
 func TestUpdateAddress(t *testing.T) {
-	addressJson := `{"Firstname":"John","lastname":"Doe","emailaddress":"john@test.com","phonenumber":"214-555-5553"}`
+	addressJSON := `{"Firstname":"John","lastname":"Doe","emailaddress":"john@test.com","phonenumber":"214-555-5553"}`
 
-	reader = strings.NewReader(addressJson)
-	addressesUrlParam := addressesUrl + "/101"
+	reader = strings.NewReader(addressJSON)
+	addressesURLParam := addressesURL + "/101"
 	request, err := http.NewRequest("POST", addressesUrlParam , reader)
 
 	res, err := http.DefaultClient.Do(request)
@@ -73,10 +73,10 @@ func TestUpdateAddress(t *testing.T) {
 	}
 }
 func TestDeleteAddress(t *testing.T) {
-	addressJson := `{"Firstname":"John","lastname":"Doe","emailaddress":"john@test.com","phonenumber":"214-555-5553"}`
+	addressJSON := `{"Firstname":"John","lastname":"Doe","emailaddress":"john@test.com","phonenumber":"214-555-5553"}`
 
-	reader = strings.NewReader(addressJson)
-	addressesUrlParam := addressesUrl + "/101"
+	reader = strings.NewReader(addressJSON)
+	addressesURLParam := addressesURL + "/101"
 	request, err := http.NewRequest("POST", addressesUrlParam , reader)
 
 	res, err := http.DefaultClient.Do(request)
