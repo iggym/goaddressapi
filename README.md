@@ -15,13 +15,13 @@ These instructions will get you a copy of the project up and running on your loc
 go get -u github.com/gorilla/mux
 ```
 
-### Installing
+### Installing (assumes terminal)
 
-1. Clone this repository (assumes terminal)
+1. Clone this repository
 ```
 git clone https://github.com/iggym/goaddressapi.git
 ```
-2. change directory to goaddressapi
+2. change directory to **goaddressapi**
 ```
 cd goaddressapi
 ```
@@ -29,7 +29,14 @@ cd goaddressapi
 ```
 go install
 ```
-End with an example of getting some data out of the system or using it for a little demo
+4. Open another terminal window and test the server with the following [curl](https://curl.haxx.se/) command.
+```
+curl -v  GET localhost:8001/addresses
+```
+You should see the following:
+```
+[{"id":"1","firstname":"Bryan","lastname":"Connerty","emailaddress":"bryanc@test-email.com","phonenumber":"214-555-5551"},{"id":"2","firstname":"Kate","lastname":"Sacker","emailaddress":"kates@test-email.com","phonenumber":"214-555-5552"},{"id":"3","firstname":"Lonnie","lastname":"Watley","emailaddress":"lonniew@test-email.com","phonenumber":"214-555-5553"},{"id":"4","firstname":"Ira","lastname":"Schirmer","emailaddress":"iras@test-email","phonenumber":"214-555-5554"},{"id":"5","firstname":"Adam","lastname":"DeGiulio","emailaddress":"adamgs@test-email","phonenumber":"214-555-5554"}]
+```
 
 ## Running the tests
 
