@@ -77,7 +77,7 @@ func deleteAddressEndpoint(w http.ResponseWriter, r *http.Request) {
 // 1MB
 const maxMemory = 1 * 1024 * 1024
 
-func upload(w http.ResponseWriter, r *http.Request) {
+func importCSVFile(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("uploading file")
 	os.RemoveAll(tmpdir)
 	os.MkdirAll(tmpdir, 0700)
@@ -134,7 +134,7 @@ func checkImportError(err error) {
 	}
 }
 
-func download(w http.ResponseWriter, r *http.Request) {
+func exportCSVFile(w http.ResponseWriter, r *http.Request) {
 
 	deleteFile(csvfilepath)
 	createFile()
@@ -201,8 +201,8 @@ func handlers() *mux.Router {
 	router.HandleFunc("/addresses/{id}", updateAddressEndpoint).Methods("PUT")
 	router.HandleFunc("/addresses/{id}", deleteAddressEndpoint).Methods("DELETE")
 	//upload and download
-	router.HandleFunc("/upload", upload)
-	router.HandleFunc("/download", download)
+	router.HandleFunc("/import", importCSVFile)
+	router.HandleFunc("/export", exportCSVFile)
 	router.Handle("/", http.FileServer(http.Dir("static")))
 	return router
 }
