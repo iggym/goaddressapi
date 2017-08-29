@@ -83,9 +83,17 @@ curl  localhost:8001/export --output list.csv
 curl -i -X POST -H "Content-Type: multipart/form-data" -F "data=@tmp.csv" localhost:8001/import
 ```
 ## Running the unit tests
-To run the unit tests enter the following command
+* To run the unit tests enter the following command
 ```
 go test -v
+```
+* To view code coverage
+```
+go test -cover
+```
+* To get a code coverage report use the below  
+```
+go tool cover -html=c.out -o coverage.html
 ```
 
 ## Deployment

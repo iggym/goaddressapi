@@ -21,7 +21,6 @@ type Address struct {
 }
 
 var addresses []Address
-
 const csvfilepath = "addresses.csv"
 const tmpdir = "tmp"
 
@@ -61,7 +60,6 @@ func updateAddressEndpoint(w http.ResponseWriter, r *http.Request) {
 	address.ID = params["id"]
 	addresses = append(addresses, address)
 	json.NewEncoder(w).Encode(addresses)
-
 }
 func deleteAddressEndpoint(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
@@ -78,7 +76,7 @@ func deleteAddressEndpoint(w http.ResponseWriter, r *http.Request) {
 const maxMemory = 1 * 1024 * 1024
 
 func importCSVFile(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("uploading file")
+	fmt.Println("importing file")
 	os.RemoveAll(tmpdir)
 	os.MkdirAll(tmpdir, 0700)
 	if err := r.ParseMultipartForm(maxMemory); err != nil {
@@ -125,8 +123,6 @@ func importCSVFile(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("Addresses from csv file uploaded ")
 	w.WriteHeader(http.StatusOK)
-	fmt.Println(addresses)
-
 }
 func checkImportError(err error) {
 	if err != nil {
@@ -136,7 +132,7 @@ func checkImportError(err error) {
 }
 
 func exportCSVFile(w http.ResponseWriter, r *http.Request) {
-
+	fmt.Println("exporting addresses to file")
 	deleteFile(csvfilepath)
 	createFile()
 	//fmt.Println(addresses)
