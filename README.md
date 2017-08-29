@@ -62,7 +62,7 @@ goaddressapi
 ```
 curl -v -X POST localhost:8001/addresses/31 --data '{"Firstname":"Bobby","lastname":"Axe","emailaddress":"axe@test.com","phonenumber":"214-545-5553"}'
 ```
-* To Delete an address
+* To Delete an address(use the id for the parameter)
 ```
 curl -v -X DELETE localhost:8001/addresses/3
 ```
