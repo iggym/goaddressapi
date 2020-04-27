@@ -1,5 +1,9 @@
 # Go Address API
+---
 
+![Go](https://github.com/iggym/goaddressapi/workflows/Go/badge.svg)
+
+---
 An address API in go.
 The API implements listing addresses, showing a single address, adding an address and modifying an address.
 The API also enables exporting addresses to a CSV file and adding addresses by importing a CSV file.
