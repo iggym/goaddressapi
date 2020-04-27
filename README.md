@@ -8,7 +8,7 @@ The API also enables exporting addresses to a CSV file and adding addresses by i
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+These instructions will get you a copy of the project and set up your your local machine for development and testing of the project.
 
 ### Prerequisites
 * Download and [install Go](https://golang.org/doc/install).
