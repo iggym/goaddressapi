@@ -1,122 +1,155 @@
 # Go Address API
----
 
-![Go](https://github.com/iggym/goaddressapi/workflows/Go/badge.svg)
+[![Go](https://github.com/iggym/goaddressapi/workflows/Go/badge.svg)](https://github.com/iggym/goaddressapi/actions)
 
----
-An address API in go.
-The API implements listing addresses, showing a single address, adding an address and modifying an address.
-The API also enables exporting addresses to a CSV file and adding addresses by importing a CSV file.
+An address API in Go. The API implements listing addresses, showing a single address, adding an address, and modifying an address. The API also enables exporting addresses to a CSV file and adding addresses by importing a CSV file.
 
----
+## Project Overview
+
+This project is a simple demonstration of a RESTful API built with Go and the Gorilla Mux router. It provides basic CRUD (Create, Read, Update, Delete) operations for a list of addresses. The addresses are stored in memory and are not persisted to a database.
+
+### Features
+
+*   List all addresses
+*   Get a single address by ID
+*   Create a new address
+*   Update an existing address
+*   Delete an address
+*   Export addresses to a CSV file
+*   Import addresses from a CSV file
+
+### Data Model
+
+The `Address` object has the following structure:
+
+```json
+{
+  "id": "string",
+  "firstname": "string",
+  "lastname": "string",
+  "emailaddress": "string",
+  "phonenumber": "string"
+}
+```
 
 ## Getting Started
 
-These instructions will get you a copy of the project and set up your your local machine for development and testing of the project.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
-* Download and [install Go](https://golang.org/doc/install).
-* Make sure your [GOPATH](https://github.com/golang/go/wiki/SettingGOPATH) is set.
-* Get [Gorilla Mux](https://github.com/gorilla/mux) (the command below assumes a [correctly configured](https://golang.org/doc/install#testing) Go toolchain)
-```
-go get -u github.com/gorilla/mux
-```
 
-### Installing (assumes terminal)
+*   Download and [install Go](https://golang.org/doc/install).
+*   Make sure your [GOPATH](https://github.com/golang/go/wiki/SettingGOPATH) is set.
+*   Install [Gorilla Mux](https://github.com/gorilla/mux):
+    ```sh
+    go get -u github.com/gorilla/mux
+    ```
 
-1. Clone this repository
-```
-git clone https://github.com/iggym/goaddressapi.git
-```
-2. change directory to **goaddressapi**
-```
-cd goaddressapi
-```
-3. run go install
-```
-go install
-```
-4. Run the server by typing the following command in your terminal. (the command below assumes a [correctly configured](https://golang.org/doc/install#testing) Go toolchain)
-```
-goaddressapi
-```
-5. Open another terminal window and test the server with the following [curl](https://curl.haxx.se/) command.
-```
-curl -v  GET localhost:8001/addresses
-```
-You should see the following:
-```
-[{"id":"1","firstname":"Bryan","lastname":"Connerty","emailaddress":"bryanc@test-email.com","phonenumber":"214-555-5551"},{"id":"2","firstname":"Kate","lastname":"Sacker","emailaddress":"kates@test-email.com","phonenumber":"214-555-5552"},{"id":"3","firstname":"Lonnie","lastname":"Watley","emailaddress":"lonniew@test-email.com","phonenumber":"214-555-5553"},{"id":"4","firstname":"Ira","lastname":"Schirmer","emailaddress":"iras@test-email","phonenumber":"214-555-5554"},{"id":"5","firstname":"Adam","lastname":"DeGiulio","emailaddress":"adamgs@test-email","phonenumber":"214-555-5554"}]
-```
+### Installing
 
----
+1.  Clone this repository:
+    ```sh
+    git clone https://github.com/iggym/goaddressapi.git
+    ```
+2.  Change into the project directory:
+    ```sh
+    cd goaddressapi
+    ```
+3.  Install the application:
+    ```sh
+    go install
+    ```
+4.  Run the server:
+    ```sh
+    goaddressapi
+    ```
+    The server will start on port `8001`.
 
-## Testing the API
-You can test the API by sending HTTP requests to the running server using a HTTP Testing client like [Postman](https://www.getpostman.com/) or using a command line tool like [curl](https://curl.haxx.se/).
+## API Endpoints
 
-Start by running the server by typing the following command in your terminal. (see above section for Installing and starting the server.)
-```
-goaddressapi
-```
-* To get a single address (use the id for the parameter)
-```
- curl -v GET localhost:8001/addresses/2
-```
-* To add an address
-```
-curl -v -X POST localhost:8001/addresses/31 --data '{"Firstname":"Bobby","lastname":"Axe","emailaddress":"axe@test.com","phonenumber":"214-545-5553"}'
-```
-* To Delete an address(use the id for the parameter)
-```
-curl -v -X DELETE localhost:8001/addresses/3
-```
-* To list all addresses
-```
-curl -v  GET localhost:8001/addresses
-```
-* To Modify an address
-```
-curl -v -X PUT localhost:8001/addresses/4 --data '{"ID":"4","Firstname":"Santa","lastname":"Claus","emailaddress":"santa@test.com","phonenumber":"214-545-5553"}'
-```
-* To Export the list of addresses to a CSV file
-```
-curl  localhost:8001/export --output list.csv
-```
-* To import addresses using a CSV file use the command below (assumes your file is a CSV file named tmp.csv)
-```
-curl -i -X POST -H "Content-Type: multipart/form-data" -F "data=@tmp.csv" localhost:8001/import
-```
-## Running the unit tests
-* To run the unit tests enter the following command
-```
+The following endpoints are available:
+
+| Method | Path                | Description                                |
+| ------ | ------------------- | ------------------------------------------ |
+| `GET`    | `/addresses`        | Get all addresses                          |
+| `GET`    | `/addresses/{id}`   | Get a single address by ID                 |
+| `POST`   | `/addresses/{id}`   | Create a new address                       |
+| `PUT`    | `/addresses/{id}`   | Update an existing address                 |
+| `DELETE` | `/addresses/{id}`   | Delete an address by ID                    |
+| `GET`    | `/export`           | Export the list of addresses to a CSV file |
+| `POST`   | `/import`           | Import addresses from a CSV file           |
+
+### Examples
+
+*   **Get all addresses:**
+    ```sh
+    curl localhost:8001/addresses
+    ```
+*   **Get a single address:**
+    ```sh
+    curl localhost:8001/addresses/2
+    ```
+*   **Create an address:**
+    ```sh
+    curl -X POST -d '{"firstname":"Bobby","lastname":"Axe","emailaddress":"axe@test.com","phonenumber":"214-545-5553"}' localhost:8001/addresses/31
+    ```
+*   **Update an address:**
+    ```sh
+    curl -X PUT -d '{"firstname":"Santa","lastname":"Claus","emailaddress":"santa@test.com","phonenumber":"214-545-5553"}' localhost:8001/addresses/4
+    ```
+*   **Delete an address:**
+    ```sh
+    curl -X DELETE localhost:8001/addresses/3
+    ```
+*   **Export to CSV:**
+    ```sh
+    curl localhost:8001/export --output list.csv
+    ```
+*   **Import from CSV:**
+    ```sh
+    curl -X POST -F "data=@tmp.csv" localhost:8001/import
+    ```
+
+## Running the Tests
+
+To run the unit tests, use the following command:
+
+```sh
 go test -v
 ```
-* To view code coverage
-```
+
+To view code coverage:
+
+```sh
 go test -cover
 ```
-* To get a code coverage report use the below  
-```
-go tool cover -html=c.out -o coverage.html
+
+To generate an HTML coverage report:
+
+```sh
+go test -coverprofile=coverage.out
+go tool cover -html=coverage.out
 ```
 
-## Deployment
+## Potential Improvements
 
-This project should not be used in a production system as is. It is a  demonstration project.
+This project is a demonstration and has several areas for improvement:
+
+*   **Code Organization:** The main `addressapi.go` file could be split into multiple files for better organization (e.g., `main.go`, `handlers.go`, `address.go`).
+*   **Error Handling:** Error handling could be more consistent and robust.
+*   **API Design:** The API could be improved to follow REST best practices more closely (e.g., using the request body for creating and updating resources).
+*   **Persistence:** The data is currently stored in memory and is lost when the server restarts. A database or file-based persistence layer could be added.
+*   **Testing:** The tests could be improved to provide more comprehensive coverage and better assertions.
 
 ## Built With
 
-* [Gorilla Mux](https://github.com/gorilla/mux)
-* [Go](https://golang.org/doc/install).
+*   [Go](https://golang.org/)
+*   [Gorilla Mux](https://github.com/gorilla/mux)
 
 ## Contributing
 
-We would love your contributions. Please submit pull requests with your changes.
+Contributions are welcome! Please submit a pull request with your changes.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to the [Gorilla Mux](https://github.com/gorilla/mux) team.
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
