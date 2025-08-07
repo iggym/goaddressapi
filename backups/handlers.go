@@ -11,19 +11,7 @@ import (
 	"os"
 )
 
-//Address data
-type Address struct {
-	ID           string `json:"id,omitempty"`
-	Firstname    string `json:"firstname,omitempty"`
-	Lastname     string `json:"lastname,omitempty"`
-	EmailAddress string `json:"emailaddress,omitempty"`
-	PhoneNumber  string `json:"phonenumber,omitempty"`
-}
-
-var addresses []Address
-const csvfilepath = "addresses.csv"
-const tmpdir = "tmp"
-
+// getAddressEndpoint returns a single address by its ID.
 func getAddressEndpoint(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	for _, item := range addresses {
@@ -34,33 +22,47 @@ func getAddressEndpoint(w http.ResponseWriter, r *http.Request) {
 	}
 	json.NewEncoder(w).Encode(&Address{})
 }
+
+// getAddressesEndpoint returns all addresses.
 func getAddressesEndpoint(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(addresses)
 }
+
+// createAddressEndpoint creates a new address.
 func createAddressEndpoint(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
 	var address Address
-	_ = json.NewDecoder(r.Body).Decode(&address)
-	address.ID = params["id"]
+	if err := json.NewDecoder(r.Body).Decode(&address); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	// a simple way to generate a new ID
+	address.ID = fmt.Sprintf("%d", len(addresses)+1)
 	addresses = append(addresses, address)
-	json.NewEncoder(w).Encode(addresses)
 	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(address)
 }
+
+// updateAddressEndpoint updates an existing address.
 func updateAddressEndpoint(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	var address Address
+	var updatedAddress Address
+	if err := json.NewDecoder(r.Body).Decode(&updatedAddress); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
 	for index, item := range addresses {
 		if item.ID == params["id"] {
-			addresses = append(addresses[:index], addresses[index+1:]...)
-			break
+			addresses[index] = updatedAddress
+			addresses[index].ID = params["id"]
+			json.NewEncoder(w).Encode(addresses[index])
+			return
 		}
-		json.NewEncoder(w).Encode(addresses)
 	}
-	_ = json.NewDecoder(r.Body).Decode(&address)
-	address.ID = params["id"]
-	addresses = append(addresses, address)
-	json.NewEncoder(w).Encode(addresses)
+	json.NewEncoder(w).Encode(&Address{})
 }
+
+// deleteAddressEndpoint deletes an address by its ID.
 func deleteAddressEndpoint(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	for index, item := range addresses {
@@ -75,13 +77,21 @@ func deleteAddressEndpoint(w http.ResponseWriter, r *http.Request) {
 // 1MB
 const maxMemory = 1 * 1024 * 1024
 
+// importCSVFile handles importing addresses from a CSV file.
 func importCSVFile(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("importing file")
-	os.RemoveAll(tmpdir)
-	os.MkdirAll(tmpdir, 0700)
+	if err := os.RemoveAll(tmpdir); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	if err := os.MkdirAll(tmpdir, 0700); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	if err := r.ParseMultipartForm(maxMemory); err != nil {
 		log.Println(err)
 		http.Error(w, err.Error(), http.StatusForbidden)
+		return
 	}
 
 	for key, value := range r.MultipartForm.Value {
@@ -92,15 +102,29 @@ func importCSVFile(w http.ResponseWriter, r *http.Request) {
 	var path string
 	for _, fileHeaders := range r.MultipartForm.File {
 		for _, fileHeader := range fileHeaders {
-			file, _ := fileHeader.Open()
+			file, err := fileHeader.Open()
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
 			path = fmt.Sprintf("tmp/%s", fileHeader.Filename)
-			buf, _ := ioutil.ReadAll(file)
-			ioutil.WriteFile(path, buf, os.ModePerm)
+			buf, err := ioutil.ReadAll(file)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+			if err := ioutil.WriteFile(path, buf, os.ModePerm); err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
 			fmt.Println(path)
 		}
 	}
 	csvfile, err := os.Open(path)
-	checkImportError(err)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	defer csvfile.Close()
 
 	reader := csv.NewReader(csvfile)
@@ -108,8 +132,8 @@ func importCSVFile(w http.ResponseWriter, r *http.Request) {
 	rawCSVdata, err := reader.ReadAll()
 
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
 	var address Address
@@ -124,20 +148,16 @@ func importCSVFile(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Addresses from csv file uploaded ")
 	w.WriteHeader(http.StatusOK)
 }
-func checkImportError(err error) {
-	if err != nil {
-		fmt.Println("Error:", err)
-		os.Exit(-1)
-	}
-}
 
+// exportCSVFile handles exporting addresses to a CSV file.
 func exportCSVFile(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("exporting addresses to file")
 	deleteFile(csvfilepath)
-	createFile()
+	createFile(csvfilepath)
 	//fmt.Println(addresses)
 	var file, err = os.OpenFile(csvfilepath, os.O_RDWR, 0644)
-	if isError(err) {
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	defer file.Close()
@@ -145,7 +165,8 @@ func exportCSVFile(w http.ResponseWriter, r *http.Request) {
 	for i := range addresses {
 		line := fmt.Sprintf("%s,%s,%s,%s\r\n", addresses[i].Firstname, addresses[i].Lastname, addresses[i].EmailAddress, addresses[i].PhoneNumber)
 		_, err = file.WriteString(line)
-		if isError(err) {
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		fmt.Printf("%s,%s,%s,%s\n", addresses[i].Firstname, addresses[i].Lastname, addresses[i].EmailAddress, addresses[i].PhoneNumber)
@@ -153,49 +174,15 @@ func exportCSVFile(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/csv")
 	w.Header().Set("Content-Disposition", "attachment; filename=addresses.csv")
 	http.ServeFile(w, r, csvfilepath)
-	w.WriteHeader(http.StatusOK)
-}
-func checkError(message string, err error) {
-	if err != nil {
-		log.Fatal(message, err)
-	}
 }
 
-func deleteFile(f string) {
-	// delete file
-	var err = os.Remove(csvfilepath)
-	if isError(err) {
-		return
-	}
-	fmt.Println("==> done deleting addresses file")
-}
-func createFile() {
-	// detect if file exists
-	var _, err = os.Stat(csvfilepath)
-	// create file if not exists
-	if os.IsNotExist(err) {
-		var file, err = os.Create(csvfilepath)
-		if isError(err) {
-			return
-		}
-		defer file.Close()
-	}
-	fmt.Println("==> done creating file", csvfilepath)
-}
-
-func isError(err error) bool {
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-
-	return (err != nil)
-}
+// handlers sets up the routes for the API.
 func handlers() *mux.Router {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/addresses", getAddressesEndpoint).Methods("GET")
+	router.HandleFunc("/addresses", createAddressEndpoint).Methods("POST")
 	router.HandleFunc("/addresses/{id}", getAddressEndpoint).Methods("GET")
-	router.HandleFunc("/addresses/{id}", createAddressEndpoint).Methods("POST")
 	router.HandleFunc("/addresses/{id}", updateAddressEndpoint).Methods("PUT")
 	router.HandleFunc("/addresses/{id}", deleteAddressEndpoint).Methods("DELETE")
 	//upload and download
@@ -203,15 +190,4 @@ func handlers() *mux.Router {
 	router.HandleFunc("/export", exportCSVFile)
 	router.Handle("/", http.FileServer(http.Dir("static")))
 	return router
-}
-
-func main() {
-	// add intial data
-	addresses = append(addresses, Address{ID: "1", Firstname: "Bryan", Lastname: "Connerty", EmailAddress: "bryanc@test-email.com", PhoneNumber: "214-555-5551"})
-	addresses = append(addresses, Address{ID: "2", Firstname: "Kate", Lastname: "Sacker", EmailAddress: "kates@test-email.com", PhoneNumber: "214-555-5552"})
-	addresses = append(addresses, Address{ID: "3", Firstname: "Lonnie", Lastname: "Watley", EmailAddress: "lonniew@test-email.com", PhoneNumber: "214-555-5553"})
-	addresses = append(addresses, Address{ID: "4", Firstname: "Ira", Lastname: "Schirmer", EmailAddress: "iras@test-email", PhoneNumber: "214-555-5554"})
-	addresses = append(addresses, Address{ID: "5", Firstname: "Adam", Lastname: "DeGiulio", EmailAddress: "adamgs@test-email", PhoneNumber: "214-555-5554"})
-	fmt.Println("Server starting (serving port: 8001)")
-	log.Fatal(http.ListenAndServe(":8001", handlers()))
 }
